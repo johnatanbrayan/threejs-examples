@@ -40,12 +40,12 @@ function init() {
   };
 
   /* Run Game Loop (update, render, repeat) */
-  var GameLoop = function() {
-    requestAnimationFrame(GameLoop);
+  var gameLoop = function() {
+    requestAnimationFrame(gameLoop);
 
     update();
     render();
   };
 
-  GameLoop();
+  gameLoop();
 }
