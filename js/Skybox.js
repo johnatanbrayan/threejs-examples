@@ -1,25 +1,27 @@
-var camera, renderer, scene;
+let camera, renderer, scene;
 
 function init() {
-  renderer = new THREE.WebGLRenderer();
-  camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 45, 30000);
   scene = new THREE.Scene();
-
+  
+  camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 45, 30000);
   camera.position.set(-900, -200, -900);
-
+  
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  var controls = new THREE.OrbitControls(camera);
-  controls.addEventListener('change', renderer);
+  let controls = new THREE.OrbitControls(camera, renderer.domElement);
+  controls.addEventListener('change', renderer.domElement);
+  controls.minDistance = 500;
+  controls.maxDistance = 1500;
 
-  var materialArray = [];
-  var texture_ft = new THREE.TextureLoader().load('/img/arid_ft.jpg');
-  var texture_bk = new THREE.TextureLoader().load('/img/arid_bk.jpg');
-  var texture_up = new THREE.TextureLoader().load('/img/arid_up.jpg');
-  var texture_dn = new THREE.TextureLoader().load('/img/arid_dn.jpg');
-  var texture_rt = new THREE.TextureLoader().load('/img/arid_rt.jpg');
-  var texture_lf = new THREE.TextureLoader().load('/img/arid_lf.jpg');
+  let materialArray = [];
+  let texture_ft = new THREE.TextureLoader().load('/img/arid_ft.jpg');
+  let texture_bk = new THREE.TextureLoader().load('/img/arid_bk.jpg');
+  let texture_up = new THREE.TextureLoader().load('/img/arid_up.jpg');
+  let texture_dn = new THREE.TextureLoader().load('/img/arid_dn.jpg');
+  let texture_rt = new THREE.TextureLoader().load('/img/arid_rt.jpg');
+  let texture_lf = new THREE.TextureLoader().load('/img/arid_lf.jpg');
 
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
@@ -28,9 +30,18 @@ function init() {
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_rt }));
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_lf }));
 
-  var skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
-  var skybox = new THREE.Mesh(skyboxGeo, materialArray);
+  for(let i = 0; i < 6; i++) {
+    materialArray[i].side = THREE.BackSide;
+  }
+  
+  let skyboxGeo = new THREE.BoxGeometry(10000, 10000, 10000);
+  let skybox = new THREE.Mesh(skyboxGeo, materialArray);
   scene.add(skybox);
+  animate();
 
+}
 
+function animate() {
+  renderer.render(scene, camera);
+  requestAnimationFrame(animate);
 }
