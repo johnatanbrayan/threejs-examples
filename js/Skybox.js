@@ -10,6 +10,14 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  window.addEventListener('resize', function() {
+    var width = window.innerWidth;
+    var heigth = window.innerHeight;
+    renderer.setSize(width / heigth);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  });
+
   let controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.addEventListener('change', renderer.domElement);
   controls.minDistance = 500;
@@ -38,7 +46,6 @@ function init() {
   let skybox = new THREE.Mesh(skyboxGeo, materialArray);
   scene.add(skybox);
   animate();
-
 }
 
 function animate() {
