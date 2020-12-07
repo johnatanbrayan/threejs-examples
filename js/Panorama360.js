@@ -14,7 +14,7 @@ function init() {
 
   /* Camera */
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  camera.position.set(-1, 0, 0);
+  camera.position.set( -1, 0, 0 );
   
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -24,16 +24,15 @@ function init() {
   controls.update();
 
   /* Object geometry */
-  const geometry = new THREE.SphereGeometry(50, 32, 32);
-  const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load('/img/kandao3.jpg');
+  const geometry = new THREE.SphereGeometry( 50, 32, 32 );
+  const texture = new THREE.TextureLoader().load( '/img/kandao3.jpg' );
   texture.wrapS = THREE.RepeatWrapping;
   texture.repeat.x = -1;
   const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-  const sphere = new THREE.Mesh(geometry, material);
+  const sphere = new THREE.Mesh( geometry, material );
 
   /* Add scene */
-  scene.add(sphere);
+  scene.add( sphere );
 
   /* Rendering the scene */
   animate();
@@ -47,7 +46,7 @@ function init() {
   
   /* Method to Rendering the scene */
   function animate() {
-    requestAnimationFrame(animate);
-    renderer.render(scene, camera);
+    requestAnimationFrame( animate );
+    renderer.render( scene, camera );
   }
 }
