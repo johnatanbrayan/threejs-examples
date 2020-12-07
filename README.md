@@ -5,14 +5,14 @@ A litle projects with awesome example threejs.
 Execute the command below at the project and open the files .html.
 
 ```sh
-python3 -m http.server
+python3 -m http.server // or python -m http.server
 ```
 
 Or
 
 ```sh
-npm install http.server -g
-http.server . -p 8000
+npm install http-server -g
+http-server . -p 8000
 
 ```
 
