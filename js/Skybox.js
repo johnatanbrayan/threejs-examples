@@ -12,7 +12,6 @@ function init() {
   const scene = new THREE.Scene();
   
   /* Camera */
-  // const camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 45, 30000 );
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 45, 30000 );
   camera.position.set( -900, -200, -900 );
   

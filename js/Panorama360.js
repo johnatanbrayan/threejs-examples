@@ -44,7 +44,7 @@ function init() {
     camera.updateProjectionMatrix();
   }
   
-  /* Method to Rendering the scene */
+  /* Method to rendering the scene */
   function animate() {
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
