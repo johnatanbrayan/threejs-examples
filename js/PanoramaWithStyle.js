@@ -5,7 +5,84 @@ function init() {
   renderer.setSize( window.innerWidth, window.innerHeight );
   const container = document.body;
   const tooltip = document.querySelector('.tooltip');
-  let tooltipActive = false;
+  let spriteActive = false;
+
+  class Scene {
+    constructor( image ) {
+      this.image = image;
+      this.points = [];
+      this.sprites = [];
+      this.scene = null;
+    }
+
+    createScene( scene ) {
+      this.scene = scene;
+      /* Object Geometry */
+      const geometry = new THREE.SphereGeometry( 50, 32, 32 );
+      const texture = new THREE.TextureLoader().load( this.image );
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.repeat.x = -1;  
+      const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
+      material.transparent = true;
+      this.sphere = new THREE.Mesh( geometry, material );
+
+      /* Add Scene */
+      this.scene.add( this.sphere );
+      this.points.forEach( this.addTooltip.bind(this) );
+    }
+
+    addPoint( point ) {
+      this.points.push( point );
+    }
+
+    /* Tooltip */
+    addTooltip( point ) {
+      let spriteMap = new THREE.TextureLoader().load( '/content/icon/info-icon.png' );
+      let spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
+      let sprite = new THREE.Sprite( spriteMaterial );
+      sprite.name = point.name;
+      // const position = new THREE.Vector3( -4.8, -1, -13 );
+      sprite.position.copy( point.position.clone().normalize().multiplyScalar(30) );
+      sprite.scale.multiplyScalar( 2.1 );
+      this.scene.add( sprite );
+      this.sprites.push( sprite );
+      sprite.onClick = () => {
+        this.destroy(); 
+        point.scene.createScene( scene );
+        point.scene.appear();
+      };
+    }
+
+    destroy() {
+      TweenLite.to(this.sphere.material, 1, {
+        opacity: 0,
+        onComplete: () => {
+          this.scene.remove( this.sphere );
+        }
+      });
+      this.sprites.forEach( ( sprite ) => {
+        TweenLite.to(sprite.scale, 1, {
+          x: 0, y: 0, z: 0,
+          onComplete: () => {
+            this.scene.remove( sprite );
+          }
+        });
+      });
+    }
+
+    appear() {
+      this.sphere.material.opacity = 0;
+      TweenLite.to(this.sphere.material, 1, {
+        opacity: 1
+      });
+      this.sprites.forEach( ( sprite ) => {
+        sprite.scale.set( 0, 0, 0 );
+        TweenLite.to(sprite.scale, 1, {
+          x: 2, y: 2, z: 2
+        });
+      });
+    }
+  }
 
   container.appendChild( renderer.domElement );
 
@@ -29,34 +106,24 @@ function init() {
   controls.rotateSpeed = 0.41;
   controls.update();
 
-  /* Object Geometry */
-  const geometry = new THREE.SphereGeometry( 50, 32, 32 );
-  const texture = new THREE.TextureLoader().load( '/img/360-4.jpg' );
-  texture.wrapS = THREE.RepeatWrapping;
-  texture.repeat.x = -1;  
-  const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
-  const sphere = new THREE.Mesh( geometry, material );
-
-  /* Add Scene */
-  scene.add( sphere );
-
   /* Rendering the Scene */
   animate();
 
-  /* Add Tooltip */
-  addTooltip( new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ), 'Informação' );
-
-  /* Tooltip */
-  function addTooltip( position, name ) {
-    let spriteMap = new THREE.TextureLoader().load( '/img/info-icon.png' );
-    let spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
-    let sprite = new THREE.Sprite( spriteMaterial );
-    sprite.name = name;
-    // const position = new THREE.Vector3( -4.8, -1, -13 );
-    sprite.position.copy( position.clone().normalize().multiplyScalar(30) );
-    sprite.scale.multiplyScalar( 2.1 );
-    scene.add( sprite );
-  }
+  /* Sphere */
+  let s = new Scene( '/content/img360/360-4.jpg');
+  let s2 = new Scene( '/content/img360/360-2.jpg');
+  s.addPoint({
+    position: new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ),
+    name: 'MAGIC PORTAL??',
+    scene: s2
+  });
+  s2.addPoint({
+    position: new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ),
+    name: 'FARM',
+    scene: s
+  });
+  s.createScene( scene );
+  
 
   function onMouseMove(e) {
     let mouse = new THREE.Vector2(
@@ -73,13 +140,15 @@ function init() {
         tooltip.style.top = ( ( -1 * p.y + 1 ) * window.innerHeight / 2 ) + 'px';
         tooltip.style.left = ( ( p.x + 1 ) * window.innerWidth / 2) + 'px';
         tooltip.classList.add('is-active');
-        tooltipActive = true;
+        tooltip.innerHTML = intersect.object.name;
+        spriteActive = intersect.object;
         foundSprite = true;
       }
     });
 
-    if ( foundSprite === false && tooltipActive ) {
+    if ( foundSprite === false && spriteActive ) {
       tooltip.classList.remove('is-active');
+      spriteActive = false;
     }
   }
   
@@ -98,7 +167,8 @@ function init() {
     let intersects = rayCaster.intersectObjects( scene.children );
     intersects.forEach( function ( intersect ) {
       if ( intersect.object.type === 'Sprite' ) {
-        console.log( intersect.object.name );
+        // console.log( intersect.object.name );
+        intersect.object.onClick();
       }
     });
     /**
