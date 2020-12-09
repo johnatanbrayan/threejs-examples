@@ -4,6 +4,9 @@ function init() {
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
   const container = document.body;
+  const tooltip = document.querySelector('.tooltip');
+  let tooltipActive = false;
+
   container.appendChild( renderer.domElement );
 
   container.addEventListener( 'click', onClick );
@@ -41,7 +44,7 @@ function init() {
   animate();
 
   /* Add Tooltip */
-  addTooltip( new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ) );
+  addTooltip( new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ), 'Informação' );
 
   /* Tooltip */
   function addTooltip( position, name ) {
@@ -54,7 +57,34 @@ function init() {
     sprite.scale.multiplyScalar( 2.1 );
     scene.add( sprite );
   }
+
+  function onMouseMove(e) {
+    let mouse = new THREE.Vector2(
+      ( e.clientX / window.innerWidth ) * 2 - 1,
+      - ( e.clientY / window.innerHeight ) * 2 + 1,
+    );
+    rayCaster.setFromCamera( mouse, camera );
+    let foundSprite = false;
+    let intersects = rayCaster.intersectObjects( scene.children );
+    intersects.forEach( function ( intersect ) {
+      if ( intersect.object.type === 'Sprite' ) {
+        let p = intersect.object.position.clone().project( camera );
+        // console.log( intersect.object.name );
+        tooltip.style.top = ( ( -1 * p.y + 1 ) * window.innerHeight / 2 ) + 'px';
+        tooltip.style.left = ( ( p.x + 1 ) * window.innerWidth / 2) + 'px';
+        tooltip.classList.add('is-active');
+        tooltipActive = true;
+        foundSprite = true;
+      }
+    });
+
+    if ( foundSprite === false && tooltipActive ) {
+      tooltip.classList.remove('is-active');
+    }
+  }
   
+  const rayCaster = new THREE.Raycaster();
+
   /* Method to click info-icon */
   function onClick(e) {
     let mouse = new THREE.Vector2(
@@ -63,12 +93,12 @@ function init() {
     );
     // console.log(mouse);
     
-    let rayCaster = new THREE.Raycaster();
+    // let rayCaster = new THREE.Raycaster();
     rayCaster.setFromCamera( mouse, camera );
     let intersects = rayCaster.intersectObjects( scene.children );
     intersects.forEach( function ( intersect ) {
-      if ( intersects.object.type === 'Sprite' ) {
-        console.log( intersects.object.name );
+      if ( intersect.object.type === 'Sprite' ) {
+        console.log( intersect.object.name );
       }
     });
     /**
@@ -78,10 +108,6 @@ function init() {
       addTooltip( intersects[0].point );
     }
     **/
-  }
-
-  function onMouseMove() {
-    
   }
 
   /* Method to rendering the scene */
