@@ -24,7 +24,7 @@ function init() {
 
   /* Object geometry */
   const geometry = new THREE.SphereGeometry( 50, 32, 32 );
-  const texture = new THREE.TextureLoader().load( '/img/kandao3.jpg' );
+  const texture = new THREE.TextureLoader().load( '/content/img360/photosphere1.jpg' );
   texture.wrapS = THREE.RepeatWrapping;
   texture.repeat.x = -1;  
   const material = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide });
