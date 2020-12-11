@@ -22,12 +22,12 @@ function init() {
   /* Scene */
   const scene = new THREE.Scene();
 
-  /* treats images */
+  /* Treats image */
   const rayCaster = new THREE.Raycaster();
 
   /* Camera */
   const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
-  camera.position.set( 1, 0.2, 0.8 );
+  camera.position.set( -5, -0.5, -1.2 );
 
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -45,12 +45,12 @@ function init() {
 
   /* Add Scene */
   scene.add( sphere );
+  
+  /* Add Tooltip */
+  addTooltip( new THREE.Vector3( 44.0959313763085, 8.651250296182077, 22.376586797720087 ), 'Informação' );
 
   /* Rendering the Scene */
   animate();
-
-  /* Add Tooltip */
-  addTooltip( new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ), 'Informação' );
 
   /* Method Tooltip */
   function addTooltip( position, name ) {
@@ -58,7 +58,6 @@ function init() {
     let spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap });
     let sprite = new THREE.Sprite( spriteMaterial );
     sprite.name = name;
-    // const position = new THREE.Vector3( -4.8, -1, -13 );
     sprite.position.copy( position.clone().normalize().multiplyScalar(30) );
     sprite.scale.multiplyScalar( 2.1 );
     scene.add( sprite );
@@ -70,10 +69,10 @@ function init() {
     let mouse = new THREE.Vector2( ( e.clientX / window.innerWidth ) * 2 - 1, - ( e.clientY / window.innerHeight ) * 2 + 1,);
 
     rayCaster.setFromCamera( mouse, camera );
-    let intersects = rayCaster.intersectObjects( scene.children );
-    intersects.forEach( ( intersect ) => {
-      if ( intersect.object.type === 'Sprite' ) {
-        let p = intersect.object.position.clone().project( camera );
+    let objects = rayCaster.intersectObjects( scene.children );
+    objects.forEach( ( object ) => {
+      if ( object.object.type === 'Sprite' ) {
+        let p = object.object.position.clone().project( camera );
         tooltip.style.top = ( ( -1 * p.y + 1 ) * window.innerHeight / 2 ) + 'px';
         tooltip.style.left = ( ( p.x + 1 ) * window.innerWidth / 2) + 'px';
         tooltip.classList.add('is-active');
@@ -92,19 +91,17 @@ function init() {
     let mouse = new THREE.Vector2( ( e.clientX / window.innerWidth ) * 2 - 1, - ( e.clientY / window.innerHeight ) * 2 + 1 );
     
     rayCaster.setFromCamera( mouse, camera );
-    let intersects = rayCaster.intersectObjects( scene.children );
-    intersects.forEach( ( intersect ) => {
-      if ( intersect.object.type === 'Sprite' ) {
-        console.log( intersect.object.name );
+    let objects = rayCaster.intersectObjects( scene.children );
+    /** 
+     * With intersects[0].point you can get the position 3d on click, You get the Vector3d
+     * console.log( intersects[0].point );
+    **/
+
+    objects.forEach( ( object ) => {
+      if ( object.object.type === 'Sprite' ) {
+        console.log( object.object.name );
       }
     });
-    /**
-    let intersects = rayCaster.intersectObject( sphere );
-    if ( intersects.length > 0 ) {
-      console.log( intersects[0].point );
-      addTooltip( intersects[0].point );
-    }
-    **/
   }
 
   /* Method to rendering the scene */
