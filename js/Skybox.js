@@ -24,12 +24,12 @@ function init() {
 
   /* Object Geometry */
   const materialArray = [];
-  const texture_ft = new THREE.TextureLoader().load( '/img/arid/arid_ft.jpg' );
-  const texture_bk = new THREE.TextureLoader().load( '/img/arid/arid_bk.jpg' );
-  const texture_up = new THREE.TextureLoader().load( '/img/arid/arid_up.jpg' );
-  const texture_dn = new THREE.TextureLoader().load( '/img/arid/arid_dn.jpg' );
-  const texture_rt = new THREE.TextureLoader().load( '/img/arid/arid_rt.jpg' );
-  const texture_lf = new THREE.TextureLoader().load( '/img/arid/arid_lf.jpg' );
+  const texture_ft = new THREE.TextureLoader().load( '/content/img360/arid/arid_ft.jpg' );
+  const texture_bk = new THREE.TextureLoader().load( '/content/img360/arid/arid_bk.jpg' );
+  const texture_up = new THREE.TextureLoader().load( '/content/img360/arid/arid_up.jpg' );
+  const texture_dn = new THREE.TextureLoader().load( '/content/img360/arid/arid_dn.jpg' );
+  const texture_rt = new THREE.TextureLoader().load( '/content/img360/arid/arid_rt.jpg' );
+  const texture_lf = new THREE.TextureLoader().load( '/content/img360/arid/arid_lf.jpg' );
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_ft }));
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_bk }));
   materialArray.push(new THREE.MeshBasicMaterial({ map: texture_up }));
