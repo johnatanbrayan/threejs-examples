@@ -93,8 +93,8 @@ function init() {
     rayCaster.setFromCamera( mouse, camera );
     let objectIntersects = rayCaster.intersectObjects( scene.children );
     /** 
-     * With intersects[0].point you can get the position 3d on click, You get the Vector3d
-     * console.log( intersects[0].point );
+     * With objectIntersects[0].point you can get the position 3d on click, You get the Vector3d
+     * console.log( objectIntersects[0].point );
     **/
 
     objectIntersects.forEach( ( objectIntersect ) => {

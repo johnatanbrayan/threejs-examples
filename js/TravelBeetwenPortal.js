@@ -72,8 +72,8 @@ function init() {
       let sprite = new THREE.Sprite( spriteMaterial );
 
       sprite.name = point.name;
-      sprite.position.copy( point.position.clone().normalize().multiplyScalar( 30 ) );
-      sprite.scale.multiplyScalar( 2.1 );
+      sprite.position.copy( point.position.clone().normalize().multiplyScalar( 25 ) );
+      sprite.scale.multiplyScalar( 2 );
 
       this.scene.add( sprite );
       this.sprites.push( sprite );
@@ -129,13 +129,13 @@ function init() {
   placeScene1.addPoint({
     position: new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ),
     name: 'MAGIC PORTAL??',
-    scene: placeScene2
+    scene: placeScene2,
   });
 
   placeScene2.addPoint({
-    position: new THREE.Vector3( -18.44473765293672, -5.421965978565057, -46.072338908811915 ),
+    position: new THREE.Vector3( 28.70438280957294, -8.623731793692764, 39.79271818313986 ),
     name: 'FARM',
-    scene: placeScene1
+    scene: placeScene1, 
   });
 
   placeScene1.createScene( scene );
