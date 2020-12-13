@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Travel Beetwen Portal</title>
+    <link rel='icon' href="/content/icon/favicon.ico">
     <script src="/build/three.js"></script>
     <script src="/js/OrbitControls.js"></script>
     <script src="/build/TweenLite.min.js"></script>
@@ -13,6 +14,7 @@
         font-family: serif;
         color: rgba(0, 0, 0, .77);
       }
+      canvas { width: 100%; height: 100%; }
       .tooltip {
         background-color: #fff;
         position: absolute;
@@ -27,7 +29,6 @@
         opacity: 1;
         transform: translate3d( -50%, calc( -100% - 38px ), 0 );
       }
-      canvas { width: 100%; height: 100%; }
     </style>
   </head>
   <body onload="init()">
