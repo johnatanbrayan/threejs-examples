@@ -42,7 +42,7 @@ function init() {
 
   /* Method to resize windows automatically */
   function onWindowResize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize( window.innerWidth, window.innerHeight );
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
   }
