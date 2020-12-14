@@ -1,5 +1,5 @@
 # Projects ThreeJs
-A litle projects with awesome example threejs.
+A litle projects with some example threejs for study. Focused on panorama and virtual tour examples.
 
 ### How to run locally
 Execute the command below at the project and open the files .html.
@@ -17,5 +17,5 @@ http-server . -p 8000
 ```
 
 ```sh
-Exemplo: localhost:8000/projects/cube/simple_cube/simple_cube.html
+Exemplo: localhost:8000/projects/panorama/travel-beetwen-portal.html
 ```
