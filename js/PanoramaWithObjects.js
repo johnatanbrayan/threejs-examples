@@ -5,6 +5,7 @@ function init() {
   /* Configure Renderer */
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
+  renderer.setPixelRatio( window.devicePixelRatio );
   document.body.appendChild( renderer.domElement );
 
   /* Get div with class tooltip on html */
@@ -32,9 +33,11 @@ function init() {
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.enableZoom = false;
-  controls.rotateSpeed = 0.41;
+  controls.rotateSpeed = - 0.40;
+  controls.enablePan = false;
+  controls.enableDamping = true;
   controls.update();
-
+  
   /* Object Geometry */
   const geometry = new THREE.SphereGeometry( 50, 32, 32 );
   const texture = new THREE.TextureLoader().load( '/content/img360/kandao3.jpg' );
@@ -107,6 +110,7 @@ function init() {
   /* Method to rendering the scene */
   function animate() {
     requestAnimationFrame( animate );
+    controls.update(); // required when damping is enabled
     renderer.render( scene, camera );
   }
 
