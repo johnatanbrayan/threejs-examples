@@ -32,7 +32,9 @@ function init() {
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.enableZoom = false;
-  controls.rotateSpeed = 0.41;
+  controls.rotateSpeed = - 0.40;
+  controls.enablePan = false;
+  controls.enableDamping = true;
   controls.update();
 
   /* Rendering the Scene */
@@ -187,6 +189,7 @@ function init() {
   /* Method to rendering the scene */
   function animate() {
     requestAnimationFrame( animate );
+    controls.update(); // required when damping is enabled
     renderer.render( scene, camera );
   }
 
