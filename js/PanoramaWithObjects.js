@@ -33,7 +33,7 @@ function init() {
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.enableZoom = false;
-  controls.rotateSpeed = - 0.40;
+  controls.rotateSpeed = - 0.42;
   controls.enablePan = false;
   controls.enableDamping = true;
   controls.update();

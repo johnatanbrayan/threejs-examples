@@ -3,7 +3,10 @@ function init() {
   /* Configure Renderer */
   const renderer = new THREE.WebGLRenderer();
   renderer.setSize( window.innerWidth, window.innerHeight );
-  document.body.appendChild( renderer.domElement );
+  document.body.appendChild( renderer.domElement ); 
+
+  /* Enable special zoom on virtual tour */
+  document.addEventListener( 'wheel', onDocumentMouseWheel, false );
 
   /* Make window responsible */
   window.addEventListener( 'resize', onWindowResize );
@@ -18,9 +21,10 @@ function init() {
   /* Control */
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
   controls.enableZoom = false;
-  controls.rotateSpeed = 0.41;
-  /* controls.update() must be called after any manual changes to the camera's transform */
-  controls.update();
+  controls.rotateSpeed = - 0.42;
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.update(); // Must be called after any manual changes to the camera's transform
 
   /* Object geometry */
   const geometry = new THREE.SphereGeometry( 50, 32, 32 );
@@ -42,10 +46,18 @@ function init() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
   }
+
+  /* Method to make special zoom on tour */
+  function onDocumentMouseWheel( event ) {
+    const fov = camera.fov + event.deltaY * 0.05;
+    camera.fov = THREE.MathUtils.clamp( fov, 10, 75 );
+    camera.updateProjectionMatrix();
+  }
   
   /* Method to rendering the scene */
   function animate() {
     requestAnimationFrame( animate );
+    controls.update(); // Is necessary if dumping is enable;
     renderer.render( scene, camera );
   }
 }
